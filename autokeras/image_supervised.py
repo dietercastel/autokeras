@@ -304,7 +304,7 @@ class ImageSupervised(Supervised):
             retrain: A boolean of whether reinitialize the weights of the model.
         """
         if trainer_args is None:
-            trainer_args = {'max_no_improvement_num': 30}
+            trainer_args = {'max_no_improvement_num': 200}
 
         y_train = self.transform_y(y_train)
         y_test = self.transform_y(y_test)
@@ -329,7 +329,7 @@ class ImageSupervised(Supervised):
 
     def export_autokeras_model(self, model_file_name):
         """ Creates and Exports the AutoKeras model to the given filename. """
-        portable_model = PortableImageSupervised(graph=self.load_searcher().load_best_model(), \
+        portable_model = PortableImageSupervised(graph=self.load_searcher().load_best_model(),
                                                  y_encoder=self.y_encoder, data_transformer=self.data_transformer)
         pickle_to_file(portable_model, model_file_name)
 
