@@ -63,6 +63,7 @@ def read_csv_file(csv_file_path):
 
 
 def read_images(img_file_names, images_dir_path):
+    #TODO: can't handle images of different sizes. What's an appropriate way to handle this?
     """Read the images from the path and return their numpy.ndarray instance.
         Return a numpy.ndarray instance containing the training data.
 
@@ -71,14 +72,26 @@ def read_images(img_file_names, images_dir_path):
         images_dir_path: Path to the directory containing images.
     """
     x_train = []
+    #TODO: calculate smallest/largest dims will be necessary for handling different sizes
     if os.path.isdir(images_dir_path):
         for img_file in img_file_names:
             img_path = os.path.join(images_dir_path, img_file)
             if os.path.exists(img_path):
-                img = ndimage.imread(fname=img_path)
+                print("reading:" + img_path)
+                img = ndimage.imread(fname=img_path) #TODO deprecated file read for scipy
+                #imread is deprecated! imread is deprecated in SciPy 1.0.0, and will be removed in 1.2.0. Use imageio.imread instead.
+                # see https://docs.scipy.org/doc/scipy/reference/generated/scipy.ndimage.imread.html#scipy.ndimage.imread
+                print(img.shape)
+                print(np.array(img).shape)
+                print("img.shape:",img.shape)
+                print("img[0].shape:",img[0].shape)
+                print("img[0][0].shape:",img[0][0].shape)
+                print("img[0][0][0].shape:",img[0][0][0].shape)
                 if len(img.shape) < 3:
                     img = img[..., np.newaxis]
+                    print(" iffed <3  ")
                 x_train.append(img)
+                print("x_train.len:",len(x_train))
             else:
                 raise ValueError("%s image does not exist" % img_file)
     else:
